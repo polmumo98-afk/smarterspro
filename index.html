@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descargar App</title>
+<style>
+  :root{
+    --bg:#0b0d12;
+    --card:#151822;
+    --accent:#4f9dff;
+    --accent-hover:#7ab8ff;
+    --text:#f2f4f8;
+    --muted:#a3aab8;
+    --focus:#ffd54f;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+  }
+  body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:40px 24px;
+  }
+  .wrap{
+    width:100%;
+    max-width:900px;
+    text-align:center;
+  }
+  h1{
+    font-size:clamp(28px, 4vw, 48px);
+    margin:0 0 8px;
+  }
+  p.subtitle{
+    color:var(--muted);
+    font-size:clamp(16px, 2vw, 22px);
+    margin:0 0 40px;
+  }
+  .apps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:24px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:32px 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    border:2px solid transparent;
+  }
+  .card .platform{
+    font-size:14px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .card h2{
+    margin:0;
+    font-size:clamp(20px, 2.4vw, 28px);
+  }
+  .card .version{
+    color:var(--muted);
+    font-size:14px;
+  }
+  a.btn, button.btn{
+    display:inline-block;
+    margin-top:8px;
+    padding:18px 36px;
+    font-size:clamp(18px, 2vw, 24px);
+    font-weight:600;
+    text-decoration:none;
+    color:#0b0d12;
+    background:var(--accent);
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:transform .15s ease, background .15s ease;
+  }
+  a.btn:hover, a.btn:focus, button.btn:hover, button.btn:focus{
+    background:var(--accent-hover);
+    outline:4px solid var(--focus);
+    outline-offset:3px;
+    transform:scale(1.04);
+  }
+  .card.disabled{
+    opacity:.5;
+  }
+  .card.disabled .btn{
+    background:#3a3f4d;
+    color:var(--muted);
+    cursor:not-allowed;
+  }
+  .note{
+    margin-top:48px;
+    color:var(--muted);
+    font-size:14px;
+    max-width:700px;
+    line-height:1.5;
+  }
+  .instructions{
+    margin-top:28px;
+    background:var(--card);
+    border-radius:12px;
+    padding:20px 24px;
+    text-align:left;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+  }
+  .instructions strong{color:var(--text);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 id="siteTitle">Descargar App</h1>
+    <p class="subtitle">Selecciona tu dispositivo para descargar</p>
+
+    <div class="apps" id="appsContainer"></div>
+
+    <div class="instructions" id="androidInstructions" style="display:none;">
+      <strong>Instrucciones Android (Smart TV / móvil):</strong><br>
+      1. Pulsa "Descargar APK".<br>
+      2. Si el navegador o Android avisa de "origen desconocido", acepta la instalación desde esta fuente.<br>
+      3. Abre el archivo descargado (o el gestor de descargas) para instalarlo.
+    </div>
+
+    <p class="note" id="footerNote"></p>
+  </div>
+
+<script>
+  // ---------------------------------------------------------------
+  // CONFIGURACIÓN: añade o edita apps aquí. No hace falta tocar nada
+  // más del HTML/CSS para añadir una nueva app o plataforma.
+  // ---------------------------------------------------------------
+  const APPS = [
+    {
+      platform: "Android",
+      name: "IPTV Smarters Pro",
+      version: "v5.0",
+      // La APK pesa demasiado para el repo normal de GitHub por web (25 MB
+      // de límite al arrastrar archivos), así que se sube como "asset" de un
+      // Release de GitHub (hasta 2 GB, también arrastrando desde el navegador)
+      // y aquí se pone la URL completa que te da ese Release.
+      file: "https://github.com/polmumo98-afk/smarterspro/releases/download/v5.0/app-android.apk",
+      enabled: true,
+      buttonText: "Descargar APK"
+    },
+    {
+      platform: "iOS",
+      name: "App iOS",
+      version: "",
+      file: "apps/app-ios.ipa",
+      enabled: false,
+      buttonText: "Descargar para iOS",
+      note: "iOS requiere distribución firmada (Apple Developer Enterprise/TestFlight) para instalarse desde el navegador."
+    }
+  ];
+
+  const container = document.getElementById("appsContainer");
+  let anyAndroidEnabled = false;
+
+  APPS.forEach(app => {
+    const card = document.createElement("div");
+    card.className = "card" + (app.enabled ? "" : " disabled");
+
+    const platform = document.createElement("div");
+    platform.className = "platform";
+    platform.textContent = app.platform;
+    card.appendChild(platform);
+
+    const title = document.createElement("h2");
+    title.textContent = app.name;
+    card.appendChild(title);
+
+    if (app.version) {
+      const v = document.createElement("div");
+      v.className = "version";
+      v.textContent = app.version;
+      card.appendChild(v);
+    }
+
+    const btn = document.createElement("a");
+    btn.className = "btn";
+    btn.textContent = app.buttonText;
+
+    if (app.enabled) {
+      btn.href = app.file;
+      btn.setAttribute("download", "");
+      if (app.platform === "Android") anyAndroidEnabled = true;
+    } else {
+      btn.href = "#";
+      btn.addEventListener("click", e => e.preventDefault());
+      btn.setAttribute("aria-disabled", "true");
+    }
+
+    card.appendChild(btn);
+
+    if (app.note) {
+      const note = document.createElement("div");
+      note.style.color = "var(--muted)";
+      note.style.fontSize = "13px";
+      note.style.marginTop = "4px";
+      note.textContent = app.note;
+      card.appendChild(note);
+    }
+
+    container.appendChild(card);
+  });
+
+  if (anyAndroidEnabled) {
+    document.getElementById("androidInstructions").style.display = "block";
+  }
+
+  document.getElementById("footerNote").textContent =
+    "Página sin contraseña (acceso libre). Puedes añadir protección más adelante si lo necesitas.";
+</script>
+</body>
+</html>
