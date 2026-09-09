@@ -46,8 +46,9 @@
     margin:0 0 40px;
   }
   .apps{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
     gap:24px;
   }
   .card{
@@ -59,6 +60,8 @@
     align-items:center;
     gap:16px;
     border:2px solid transparent;
+    width:100%;
+    max-width:340px;
   }
   .card .platform{
     font-size:14px;
@@ -156,16 +159,10 @@
       file: "https://github.com/polmumo98-afk/smarterspro/releases/download/v5.0/iptv-smarters-pro-5-0.apk",
       enabled: true,
       buttonText: "Descargar APK"
-    },
-    {
-      platform: "iOS",
-      name: "App iOS",
-      version: "",
-      file: "apps/app-ios.ipa",
-      enabled: false,
-      buttonText: "Descargar para iOS",
-      note: "iOS requiere distribución firmada (Apple Developer Enterprise/TestFlight) para instalarse desde el navegador."
     }
+    // iOS: de momento no hay versión disponible (ni la propia app oficial
+    // la ofrece, requiere distribución firmada tipo TestFlight/Enterprise).
+    // Cuando exista, añade aquí una entrada igual que la de Android.
   ];
 
   const container = document.getElementById("appsContainer");
