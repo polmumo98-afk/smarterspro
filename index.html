@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Descargar App</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f9dff'/%3E%3Cstop offset='1' stop-color='%238b6cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M24 16v32l24-16-24-16z' fill='%230a0e17'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -147,6 +148,15 @@
     outline:3px solid var(--focus);
     outline-offset:3px;
   }
+  .size-label{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:-4px;
+  }
+  .min-os{
+    color:#5b6478;
+    font-size:11px;
+  }
   .card.disabled{ opacity:.55; }
   .card.disabled .btn{
     background:#28304a;
@@ -255,6 +265,8 @@
       // Release de GitHub (hasta 2 GB, también arrastrando desde el navegador)
       // y aquí se pone la URL completa que te da ese Release.
       file: "https://github.com/polmumo98-afk/smarterspro/releases/download/v5.0/iptv-smarters-pro-5-0.apk",
+      sizeLabel: "77 MB",
+      minOs: "Requiere Android 5.0 o superior",
       enabled: true,
       buttonText: "Descargar APK",
       icon: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 9.48l1.84-3.18a.5.5 0 10-.87-.5l-1.86 3.22a10.9 10.9 0 00-8.42 0L6.43 5.8a.5.5 0 10-.87.5l1.84 3.18C4.7 11.28 3 14.02 3 17h18c0-2.98-1.7-5.72-3.4-7.52zM8 14a1 1 0 110-2 1 1 0 010 2zm8 0a1 1 0 110-2 1 1 0 010 2z" fill="#3ddc97"/></svg>'
@@ -309,6 +321,20 @@
     }
 
     card.appendChild(btn);
+
+    if (app.sizeLabel) {
+      const size = document.createElement("div");
+      size.className = "size-label";
+      size.textContent = app.sizeLabel;
+      card.appendChild(size);
+    }
+
+    if (app.minOs) {
+      const minOs = document.createElement("div");
+      minOs.className = "min-os";
+      minOs.textContent = app.minOs;
+      card.appendChild(minOs);
+    }
 
     if (app.note) {
       const note = document.createElement("div");
