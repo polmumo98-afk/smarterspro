@@ -4,46 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Descargar App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0d12;
-    --card:#151822;
+    --bg-1:#0a0e17;
+    --bg-2:#101625;
+    --card:#141b2b;
+    --card-border:#232c42;
     --accent:#4f9dff;
-    --accent-hover:#7ab8ff;
-    --text:#f2f4f8;
-    --muted:#a3aab8;
+    --accent-2:#8b6cff;
+    --accent-hover:#6db0ff;
+    --text:#f4f6fb;
+    --muted:#8b93a7;
     --focus:#ffd54f;
+    --success:#3ddc97;
   }
   *{box-sizing:border-box;}
   html,body{
     margin:0;
     padding:0;
-    height:100%;
-    background:var(--bg);
-    color:var(--text);
-    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    min-height:100%;
   }
   body{
+    background:
+      radial-gradient(circle at 15% -10%, rgba(79,157,255,0.16), transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(139,108,255,0.14), transparent 40%),
+      var(--bg-1);
+    color:var(--text);
+    font-family:"Inter", "Segoe UI", Roboto, Arial, sans-serif;
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
     min-height:100vh;
-    padding:40px 24px;
+    padding:64px 24px 40px;
   }
   .wrap{
     width:100%;
-    max-width:900px;
+    max-width:920px;
     text-align:center;
   }
+  .logo{
+    width:64px;
+    height:64px;
+    margin:0 auto 24px;
+    border-radius:18px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 30px rgba(79,157,255,0.35);
+  }
+  .logo svg{ width:32px; height:32px; }
   h1{
-    font-size:clamp(28px, 4vw, 48px);
-    margin:0 0 8px;
+    font-size:clamp(30px, 4.2vw, 46px);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0 0 10px;
   }
   p.subtitle{
     color:var(--muted);
-    font-size:clamp(16px, 2vw, 22px);
-    margin:0 0 40px;
+    font-size:clamp(15px, 1.8vw, 18px);
+    margin:0 0 48px;
+    font-weight:500;
   }
   .apps{
     display:flex;
@@ -52,95 +76,169 @@
     gap:24px;
   }
   .card{
-    background:var(--card);
-    border-radius:16px;
-    padding:32px 24px;
+    background:linear-gradient(180deg, var(--card), rgba(20,27,43,0.6));
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:36px 28px;
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:16px;
-    border:2px solid transparent;
+    gap:14px;
     width:100%;
-    max-width:340px;
+    max-width:360px;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,0.6);
+    transition:transform .2s ease, border-color .2s ease;
   }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(79,157,255,0.4);
+  }
+  .card-icon{
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    background:rgba(61,220,151,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:4px;
+  }
+  .card-icon svg{ width:28px; height:28px; }
   .card .platform{
-    font-size:14px;
-    letter-spacing:1px;
+    font-size:12px;
+    letter-spacing:1.5px;
     text-transform:uppercase;
     color:var(--muted);
+    font-weight:700;
   }
   .card h2{
     margin:0;
-    font-size:clamp(20px, 2.4vw, 28px);
+    font-size:clamp(20px, 2.4vw, 26px);
+    font-weight:700;
   }
   .card .version{
     color:var(--muted);
-    font-size:14px;
+    font-size:13px;
+    background:rgba(255,255,255,0.05);
+    padding:3px 10px;
+    border-radius:20px;
   }
   a.btn, button.btn{
-    display:inline-block;
-    margin-top:8px;
-    padding:18px 36px;
-    font-size:clamp(18px, 2vw, 24px);
-    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:10px;
+    padding:16px 32px;
+    width:100%;
+    font-size:17px;
+    font-weight:700;
     text-decoration:none;
-    color:#0b0d12;
-    background:var(--accent);
+    color:#0a0e17;
+    background:linear-gradient(135deg, var(--accent), #7ec4ff);
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     cursor:pointer;
-    transition:transform .15s ease, background .15s ease;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 10px 25px -8px rgba(79,157,255,0.6);
   }
   a.btn:hover, a.btn:focus, button.btn:hover, button.btn:focus{
-    background:var(--accent-hover);
-    outline:4px solid var(--focus);
+    transform:scale(1.03);
+    outline:3px solid var(--focus);
     outline-offset:3px;
-    transform:scale(1.04);
   }
-  .card.disabled{
-    opacity:.5;
-  }
+  .card.disabled{ opacity:.55; }
   .card.disabled .btn{
-    background:#3a3f4d;
+    background:#28304a;
     color:var(--muted);
+    box-shadow:none;
     cursor:not-allowed;
   }
-  .note{
-    margin-top:48px;
-    color:var(--muted);
-    font-size:14px;
-    max-width:700px;
-    line-height:1.5;
+  .section-title{
+    margin:56px 0 20px;
+    font-size:20px;
+    font-weight:700;
+    text-align:left;
   }
   .instructions{
-    margin-top:28px;
     background:var(--card);
-    border-radius:12px;
-    padding:20px 24px;
+    border:1px solid var(--card-border);
+    border-radius:18px;
+    padding:28px 28px;
     text-align:left;
-    color:var(--muted);
-    font-size:14px;
-    line-height:1.6;
+    color:#c3c9d9;
+    font-size:15px;
+    line-height:1.7;
   }
-  .instructions strong{color:var(--text);}
+  .instructions + .instructions{ margin-top:20px; }
+  .steps{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:step;
+  }
+  .steps li{
+    counter-increment:step;
+    display:flex;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .steps li:last-child{ margin-bottom:0; }
+  .steps li::before{
+    content:counter(step);
+    flex:none;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#0a0e17;
+    font-weight:800;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .fields{
+    margin:16px 0 4px 40px;
+    background:rgba(255,255,255,0.04);
+    border-radius:10px;
+    padding:16px 18px;
+    display:grid;
+    gap:8px;
+  }
+  .fields div strong{ color:var(--text); }
+  code{
+    background:rgba(255,255,255,0.08);
+    color:var(--text);
+    padding:2px 7px;
+    border-radius:5px;
+    font-size:13px;
+  }
+  em{ color:var(--text); font-style:normal; font-weight:700; }
+  footer{
+    margin-top:56px;
+    color:#5b6478;
+    font-size:13px;
+  }
 </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 5v14l11-7-11-7z" fill="#0a0e17"/>
+      </svg>
+    </div>
+
     <h1 id="siteTitle">Descargar App</h1>
     <p class="subtitle">Selecciona tu dispositivo para descargar</p>
 
     <div class="apps" id="appsContainer"></div>
 
-    <div class="instructions" id="androidInstructions" style="display:none;">
-      <strong>Instrucciones Android (Smart TV / móvil):</strong><br>
-      1. Pulsa "Descargar APK".<br>
-      2. Si el navegador o Android avisa de "origen desconocido", acepta la instalación desde esta fuente.<br>
-      3. Abre el archivo descargado (o el gestor de descargas) para instalarlo.
-    </div>
-
-    <p class="note" id="footerNote"></p>
+    <div id="instructionsWrap"></div>
   </div>
+
+  <footer>Descarga directa · sin registro</footer>
 
 <script>
   // ---------------------------------------------------------------
@@ -158,7 +256,8 @@
       // y aquí se pone la URL completa que te da ese Release.
       file: "https://github.com/polmumo98-afk/smarterspro/releases/download/v5.0/iptv-smarters-pro-5-0.apk",
       enabled: true,
-      buttonText: "Descargar APK"
+      buttonText: "Descargar APK",
+      icon: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 9.48l1.84-3.18a.5.5 0 10-.87-.5l-1.86 3.22a10.9 10.9 0 00-8.42 0L6.43 5.8a.5.5 0 10-.87.5l1.84 3.18C4.7 11.28 3 14.02 3 17h18c0-2.98-1.7-5.72-3.4-7.52zM8 14a1 1 0 110-2 1 1 0 010 2zm8 0a1 1 0 110-2 1 1 0 010 2z" fill="#3ddc97"/></svg>'
     }
     // iOS: de momento no hay versión disponible (ni la propia app oficial
     // la ofrece, requiere distribución firmada tipo TestFlight/Enterprise).
@@ -171,6 +270,13 @@
   APPS.forEach(app => {
     const card = document.createElement("div");
     card.className = "card" + (app.enabled ? "" : " disabled");
+
+    if (app.icon) {
+      const iconWrap = document.createElement("div");
+      iconWrap.className = "card-icon";
+      iconWrap.innerHTML = app.icon;
+      card.appendChild(iconWrap);
+    }
 
     const platform = document.createElement("div");
     platform.className = "platform";
@@ -217,11 +323,37 @@
   });
 
   if (anyAndroidEnabled) {
-    document.getElementById("androidInstructions").style.display = "block";
-  }
+    document.getElementById("instructionsWrap").innerHTML = `
+      <div class="section-title">Instalación</div>
+      <div class="instructions">
+        <ol class="steps">
+          <li>Pulsa "Descargar APK".</li>
+          <li>Si el navegador o Android avisan de "origen desconocido", acepta la instalación desde esta fuente.</li>
+          <li>Abre el archivo descargado (o el gestor de descargas) para instalarlo.</li>
+        </ol>
+      </div>
 
-  document.getElementById("footerNote").textContent =
-    "Página sin contraseña (acceso libre). Puedes añadir protección más adelante si lo necesitas.";
+      <div class="section-title">Cómo añadir tu lista (Xtream Codes API)</div>
+      <div class="instructions">
+        <ol class="steps">
+          <li>Abre la app IPTV Smarters Pro ya instalada.</li>
+          <li>Si te pide aceptar los términos, acéptalos.</li>
+          <li>Elige la opción <em>Login with Xtream Codes API</em>.</li>
+          <li>
+            Rellena los datos que te ha dado tu proveedor:
+            <div class="fields">
+              <div><strong>Nombre de la conexión:</strong> el que quieras (ej. "Mi Lista")</div>
+              <div><strong>Usuario:</strong> tu nombre de usuario</div>
+              <div><strong>Contraseña:</strong> tu clave de acceso</div>
+              <div><strong>URL del servidor:</strong> tipo <code>http://servidor.com:puerto</code></div>
+            </div>
+          </li>
+          <li>Pulsa <em>Add User</em> (Añadir usuario) o Iniciar sesión.</li>
+          <li>Espera a que carguen los canales, películas y series.</li>
+        </ol>
+      </div>
+    `;
+  }
 </script>
 </body>
 </html>
